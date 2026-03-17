@@ -1,0 +1,84 @@
+{
+  "_readme": "Add new skills here. The AI reads this file as context — no code changes needed.",
+  "categories": {
+    "programming_languages": {
+      "label": "Programming Languages",
+      "skills": [
+        "Python", "JavaScript", "TypeScript", "Java", "C", "C++", "C#",
+        "Go", "Rust", "Kotlin", "Swift", "Ruby", "PHP", "R", "Scala",
+        "Dart", "Elixir", "Haskell", "MATLAB", "Julia"
+      ]
+    },
+    "web_frontend": {
+      "label": "Frontend Development",
+      "skills": [
+        "React", "Next.js", "Vue.js", "Angular", "Svelte", "Astro",
+        "HTML", "CSS", "Tailwind CSS", "Bootstrap", "SASS/SCSS",
+        "Redux", "Zustand", "React Query", "GraphQL (client)"
+      ]
+    },
+    "web_backend": {
+      "label": "Backend Development",
+      "skills": [
+        "FastAPI", "Django", "Flask", "Express.js", "NestJS", "Spring Boot",
+        "Laravel", "Rails", "ASP.NET Core", "Gin", "Fiber",
+        "REST API design", "GraphQL (server)", "WebSockets", "gRPC"
+      ]
+    },
+    "databases": {
+      "label": "Databases",
+      "skills": [
+        "PostgreSQL", "MySQL", "SQLite", "MongoDB", "Redis", "Cassandra",
+        "Elasticsearch", "DynamoDB", "Supabase", "Firebase",
+        "ChromaDB", "Pinecone", "Weaviate", "Qdrant"
+      ]
+    },
+    "ai_ml": {
+      "label": "AI / Machine Learning",
+      "skills": [
+        "Machine Learning", "Deep Learning", "NLP", "Computer Vision",
+        "TensorFlow", "PyTorch", "scikit-learn", "Keras", "Hugging Face",
+        "LangChain", "LlamaIndex", "OpenAI API", "Anthropic Claude API",
+        "Gemini API", "Prompt Engineering", "RAG", "Fine-tuning",
+        "spaCy", "NLTK", "Pandas", "NumPy", "Matplotlib", "Seaborn"
+      ]
+    },
+    "devops_cloud": {
+      "label": "DevOps / Cloud",
+      "skills": [
+        "Docker", "Kubernetes", "CI/CD", "GitHub Actions", "Jenkins",
+        "AWS", "GCP", "Azure", "Vercel", "Render", "Railway",
+        "Linux", "Bash scripting", "Terraform", "Ansible", "Nginx"
+      ]
+    },
+    "mobile": {
+      "label": "Mobile Development",
+      "skills": [
+        "Android (Kotlin)", "iOS (Swift)", "React Native", "Flutter",
+        "Expo", "Ionic"
+      ]
+    },
+    "tools": {
+      "label": "Tools & Practices",
+      "skills": [
+        "Git", "GitHub", "GitLab", "JIRA", "Agile", "Scrum",
+        "Unit Testing", "Integration Testing", "TDD",
+        "VS Code", "Postman", "Figma"
+      ]
+    },
+    "data_engineering": {
+      "label": "Data Engineering",
+      "skills": [
+        "Apache Spark", "Apache Kafka", "Airflow", "dbt", "ETL pipelines",
+        "Data Warehousing", "BigQuery", "Snowflake", "Power BI", "Tableau"
+      ]
+    },
+    "cybersecurity": {
+      "label": "Cybersecurity",
+      "skills": [
+        "Network Security", "Penetration Testing", "OWASP", "JWT",
+        "OAuth 2.0", "SSL/TLS", "Cryptography", "SIEM", "Ethical Hacking"
+      ]
+    }
+  }
+}

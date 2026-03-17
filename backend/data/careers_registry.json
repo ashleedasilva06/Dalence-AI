@@ -1,0 +1,95 @@
+{
+  "_readme": "Add new career paths here. AI uses this as context to match user profiles.",
+  "careers": [
+    {
+      "id": "full_stack_developer",
+      "title": "Full Stack Developer",
+      "description": "Builds both frontend and backend of web applications",
+      "core_skills": ["React", "Node.js or Python backend", "PostgreSQL or MongoDB", "REST APIs", "Git"],
+      "nice_to_have": ["TypeScript", "Docker", "CI/CD", "AWS"],
+      "avg_salary_india": "₹4–15 LPA",
+      "demand": "very_high",
+      "suitable_for": ["CS graduates", "MCA", "self-taught developers"]
+    },
+    {
+      "id": "ai_ml_engineer",
+      "title": "AI / ML Engineer",
+      "description": "Builds and deploys machine learning models and AI systems",
+      "core_skills": ["Python", "Machine Learning", "Deep Learning", "PyTorch or TensorFlow", "SQL"],
+      "nice_to_have": ["MLOps", "Docker", "Hugging Face", "LLM APIs", "RAG"],
+      "avg_salary_india": "₹6–20 LPA",
+      "demand": "very_high",
+      "suitable_for": ["CS/IT graduates", "MCA", "Data Science students"]
+    },
+    {
+      "id": "data_scientist",
+      "title": "Data Scientist",
+      "description": "Extracts insights from data using statistics and ML",
+      "core_skills": ["Python", "Pandas", "NumPy", "scikit-learn", "SQL", "Data Visualization"],
+      "nice_to_have": ["Spark", "Tableau", "Power BI", "Deep Learning"],
+      "avg_salary_india": "₹5–18 LPA",
+      "demand": "high",
+      "suitable_for": ["CS graduates", "MCA", "Statistics graduates"]
+    },
+    {
+      "id": "backend_developer",
+      "title": "Backend Developer",
+      "description": "Builds server-side logic, APIs, and database architecture",
+      "core_skills": ["Python/Java/Node.js", "REST APIs", "SQL", "Authentication", "Docker"],
+      "nice_to_have": ["Microservices", "Kafka", "Redis", "gRPC", "Kubernetes"],
+      "avg_salary_india": "₹4–14 LPA",
+      "demand": "high",
+      "suitable_for": ["CS/IT graduates", "MCA"]
+    },
+    {
+      "id": "frontend_developer",
+      "title": "Frontend Developer",
+      "description": "Builds user interfaces and web experiences",
+      "core_skills": ["HTML", "CSS", "JavaScript", "React", "Responsive Design"],
+      "nice_to_have": ["TypeScript", "Next.js", "Tailwind CSS", "Testing"],
+      "avg_salary_india": "₹3–12 LPA",
+      "demand": "high",
+      "suitable_for": ["CS/IT graduates", "MCA", "self-taught developers"]
+    },
+    {
+      "id": "devops_engineer",
+      "title": "DevOps / Cloud Engineer",
+      "description": "Manages infrastructure, deployment pipelines, and cloud systems",
+      "core_skills": ["Linux", "Docker", "Kubernetes", "CI/CD", "AWS or GCP or Azure"],
+      "nice_to_have": ["Terraform", "Ansible", "Monitoring", "Security"],
+      "avg_salary_india": "₹5–18 LPA",
+      "demand": "high",
+      "suitable_for": ["CS/IT graduates", "MCA", "System admins"]
+    },
+    {
+      "id": "mobile_developer",
+      "title": "Mobile Developer",
+      "description": "Builds Android or iOS applications",
+      "core_skills": ["Flutter or React Native", "Dart or JavaScript", "REST APIs", "Git"],
+      "nice_to_have": ["Kotlin", "Swift", "Firebase", "App Store deployment"],
+      "avg_salary_india": "₹4–14 LPA",
+      "demand": "medium_high",
+      "suitable_for": ["CS/IT graduates", "MCA"]
+    },
+    {
+      "id": "data_engineer",
+      "title": "Data Engineer",
+      "description": "Builds data pipelines and infrastructure",
+      "core_skills": ["Python", "SQL", "ETL", "Spark or Kafka", "Data Warehousing"],
+      "nice_to_have": ["Airflow", "dbt", "Snowflake", "BigQuery"],
+      "avg_salary_india": "₹6–20 LPA",
+      "demand": "high",
+      "suitable_for": ["CS graduates", "MCA", "Statistics graduates"]
+    },
+    {
+      "id": "cybersecurity_analyst",
+      "title": "Cybersecurity Analyst",
+      "description": "Protects systems and networks from security threats",
+      "core_skills": ["Network Security", "Linux", "Python", "OWASP", "Ethical Hacking"],
+      "nice_to_have": ["CEH certification", "Penetration Testing", "SIEM", "Cloud Security"],
+      "avg_salary_india": "₹4–16 LPA",
+      "demand": "medium_high",
+      "suitable_for": ["CS/IT graduates", "MCA"]
+    }
+  ]
+}

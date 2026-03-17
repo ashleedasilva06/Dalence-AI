@@ -1,0 +1,49 @@
+# ─── Web Framework ────────────────────────────────────────────────
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+python-multipart==0.0.9        # file uploads
+
+# ─── Data Validation ──────────────────────────────────────────────
+pydantic==2.7.1
+pydantic-core==2.18.2
+pydantic-settings==2.3.0
+
+# ─── Database ─────────────────────────────────────────────────────
+sqlalchemy==2.0.30
+alembic==1.13.1
+psycopg2-binary==2.9.9         # PostgreSQL driver
+
+# ─── Auth / Security ──────────────────────────────────────────────
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.1.3
+
+# ─── Environment ──────────────────────────────────────────────────
+python-dotenv==1.0.1
+
+# ─── Resume Parsing ───────────────────────────────────────────────
+pymupdf==1.24.3                # PDF parsing (fitz)
+python-docx==1.1.2             # DOCX parsing
+
+# ─── NLP ──────────────────────────────────────────────────────────
+spacy==3.8.2
+# After pip install, run: python -m spacy download en_core_web_sm
+
+# ─── Embeddings (local, no API cost) ──────────────────────────────
+sentence-transformers==3.0.1   # uses all-MiniLM-L6-v2 by default
+
+# ─── Vector Store (in-process, no server needed) ──────────────────
+# 0.4.24 avoids the typer conflict between spacy 3.8 and chromadb 0.5
+chromadb==0.4.24
+numpy==1.26.4
+
+# ─── AI API ───────────────────────────────────────────────────────
+anthropic==0.28.0              # Claude API
+
+# ─── File Storage ─────────────────────────────────────────────────
+cloudinary==1.40.0
+
+# ─── Utilities ────────────────────────────────────────────────────
+httpx==0.27.0                  # async HTTP client
+python-magic==0.4.27           # file type detection
+aiofiles==23.2.1               # async file I/O
