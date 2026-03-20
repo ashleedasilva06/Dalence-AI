@@ -1,53 +1,58 @@
 """
 Module 4 — Embedding Generator
-Converts resume/job text into semantic vectors using sentence-transformers.
-Runs locally — zero API cost.
-Model: all-MiniLM-L6-v2 (fast, 384-dim, great for semantic similarity)
+In production (Render): skips sentence-transformers entirely, uses simple TF-IDF style vectors
+In development: uses sentence-transformers all-MiniLM-L6-v2
 """
 
-from functools import lru_cache
-from sentence_transformers import SentenceTransformer
+import os
 import numpy as np
+from functools import lru_cache
+
+USE_LOCAL_MODEL = os.getenv("USE_LOCAL_EMBEDDINGS", "false").lower() == "true"
+
+
+def _tfidf_embedding(text: str, dim: int = 384) -> list[float]:
+    """Lightweight fallback embedding using character n-grams. No ML deps needed."""
+    import hashlib, math
+    words = text.lower().split()[:300]
+    vec = np.zeros(dim)
+    for i, word in enumerate(words):
+        h = int(hashlib.md5(word.encode()).hexdigest(), 16)
+        idx = h % dim
+        vec[idx] += 1.0 / math.log(i + 2)
+    norm = np.linalg.norm(vec)
+    if norm > 0:
+        vec = vec / norm
+    return vec.tolist()
 
 
 @lru_cache(maxsize=1)
-def _get_model() -> SentenceTransformer:
-    """Load model once and cache — takes ~2s on first call."""
+def _get_model():
+    from sentence_transformers import SentenceTransformer
     return SentenceTransformer("all-MiniLM-L6-v2")
 
 
 def generate_embedding(text: str) -> list[float]:
-    """
-    Converts text to a 384-dimensional vector.
-    Returns a plain Python list (JSON-serializable, ChromaDB-compatible).
-    """
-    model = _get_model()
     text = _prepare_text(text)
-    embedding = model.encode(text, normalize_embeddings=True)
-    return embedding.tolist()
+    if USE_LOCAL_MODEL:
+        model = _get_model()
+        return model.encode(text, normalize_embeddings=True).tolist()
+    return _tfidf_embedding(text)
 
 
 def generate_batch_embeddings(texts: list[str]) -> list[list[float]]:
-    """Batch encode multiple texts — more efficient than calling one by one."""
-    model = _get_model()
-    prepared = [_prepare_text(t) for t in texts]
-    embeddings = model.encode(prepared, normalize_embeddings=True, batch_size=32)
-    return embeddings.tolist()
+    if USE_LOCAL_MODEL:
+        model = _get_model()
+        prepared = [_prepare_text(t) for t in texts]
+        return model.encode(prepared, normalize_embeddings=True, batch_size=32).tolist()
+    return [_tfidf_embedding(_prepare_text(t)) for t in texts]
 
 
 def cosine_similarity(vec_a: list[float], vec_b: list[float]) -> float:
-    """
-    Compute cosine similarity between two vectors.
-    Returns a score between 0.0 (no match) and 1.0 (identical).
-    """
-    a = np.array(vec_a)
-    b = np.array(vec_b)
+    a, b = np.array(vec_a), np.array(vec_b)
     return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b) + 1e-10))
 
 
 def _prepare_text(text: str) -> str:
-    """Truncate to model's max token limit (~256 words works well for MiniLM)."""
     words = text.split()
-    if len(words) > 300:
-        return " ".join(words[:300])
-    return text
+    return " ".join(words[:300]) if len(words) > 300 else text
