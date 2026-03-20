@@ -17,7 +17,10 @@ export interface Resume {
   skill_gaps: SkillGap[] | null;
   resume_score: number | null;
   suggestions: ResumeSuggestion[] | null;
-  status: "uploaded" | "processing" | "analyzed";
+  status: "uploaded" | "processing" | "analyzed" | "error";
+  analysis_stage?: string;
+  created_at?: string;
+  chroma_id?: string;
 }
 
 export interface CareerMatch {

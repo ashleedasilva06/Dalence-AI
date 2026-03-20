@@ -28,9 +28,13 @@ app = FastAPI(
 )
 
 # ─── CORS ─────────────────────────────────────────────────────────
+# Allow frontend + NextAuth server-side calls (which have no origin header)
+allowed_origins = [settings.frontend_url, "http://localhost:3000", "http://127.0.0.1:3000"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.frontend_url],
+    allow_origins=allowed_origins,
+    allow_origin_regex=r"http://localhost:.*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -43,7 +47,7 @@ app.include_router(jobs.router,     prefix="/api/jobs",     tags=["Jobs"])
 app.include_router(analysis.router, prefix="/api/analysis", tags=["Analysis"])
 app.include_router(chat.router,     prefix="/api/chat",     tags=["Chat"])
 app.include_router(admin.router,    prefix="/api/admin",    tags=["Admin"])
-app.include_router(interview.router, prefix="/api/interview", tags=["Interview"]) 
+
 
 @app.get("/", tags=["Health"])
 def root():

@@ -5,12 +5,21 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
+// Helper — reads token from Zustand's persist storage
+function getToken(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem("auth-storage");
+    return raw ? JSON.parse(raw)?.state?.token ?? null : null;
+  } catch {
+    return null;
+  }
+}
+
 // Attach token automatically
 api.interceptors.request.use((config) => {
-  if (typeof window !== "undefined") {
-    const token = localStorage.getItem("token");
-    if (token) config.headers.Authorization = `Bearer ${token}`;
-  }
+  const token = getToken();
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
@@ -19,7 +28,7 @@ api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.status === 401 && typeof window !== "undefined") {
-      localStorage.removeItem("token");
+      localStorage.removeItem("auth-storage");
       window.location.href = "/login";
     }
     return Promise.reject(err);
@@ -95,20 +104,26 @@ export const interviewApi = {
     }),
 };
 
+// ─── Profile ──────────────────────────────────────────────────────
+export const profileApi = {
+  get: () => api.get("/api/auth/profile"),
+  update: (data: Record<string, any>) => api.put("/api/auth/profile", data),
+};
+
 // ─── Chat (streaming) ─────────────────────────────────────────────
 export async function streamChat(
   messages: { role: string; content: string }[],
   resumeId: string | null,
   onChunk: (chunk: string) => void
 ) {
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : "";
+  const token = getToken();
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/chat/stream`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       body: JSON.stringify({ messages, resume_id: resumeId }),
     }
