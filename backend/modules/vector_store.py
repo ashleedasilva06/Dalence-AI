@@ -58,3 +58,31 @@ def _get_client():
 
 def _resumes_collection():
     return _get_client().get_or_create_collection(name="resumes", metadata={"hnsw:space": "cosine"})
+
+
+def query_jobs_by_resume(resume_embedding: list[float], n_results: int = 10) -> list[dict]:
+    """Find jobs similar to a resume embedding. No-op in production."""
+    if not USE_LOCAL:
+        return []
+    try:
+        col = _jobs_collection()
+        results = col.query(query_embeddings=[resume_embedding], n_results=n_results)
+        return [{"id": id_, "score": 1 - dist, "metadata": meta}
+                for id_, dist, meta in zip(results["ids"][0], results["distances"][0], results["metadatas"][0])]
+    except Exception:
+        return []
+
+
+def upsert_job(job_id: str, embedding: list[float], metadata: dict) -> bool:
+    """Store a job embedding. No-op in production."""
+    if not USE_LOCAL:
+        return True
+    try:
+        _jobs_collection().upsert(ids=[job_id], embeddings=[embedding], metadatas=[metadata])
+        return True
+    except Exception:
+        return False
+
+
+def _jobs_collection():
+    return _get_client().get_or_create_collection(name="jobs", metadata={"hnsw:space": "cosine"})
