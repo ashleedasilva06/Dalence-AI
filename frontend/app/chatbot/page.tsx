@@ -8,6 +8,62 @@ import { Send, Loader2, Bot, User, Sparkles } from "lucide-react";
 interface Message { role: "user" | "assistant"; content: string; }
 const F = "#0A3D3D", C = "#C08552";
 
+
+function MarkdownMessage({ content }: { content: string }) {
+  const lines = content.split("\n");
+  const elements: React.ReactNode[] = [];
+  let listItems: string[] = [];
+  let listType: "ol" | "ul" | null = null;
+
+  const flushList = () => {
+    if (listItems.length === 0) return;
+    if (listType === "ol") {
+      elements.push(
+        <ol key={elements.length} className="list-decimal ml-4 space-y-1 my-2">
+          {listItems.map((item, i) => <li key={i} className="text-sm leading-relaxed" style={{ color: "#0D1F1F" }} dangerouslySetInnerHTML={{ __html: formatInline(item) }}/>)}
+        </ol>
+      );
+    } else {
+      elements.push(
+        <ul key={elements.length} className="list-disc ml-4 space-y-1 my-2">
+          {listItems.map((item, i) => <li key={i} className="text-sm leading-relaxed" style={{ color: "#0D1F1F" }} dangerouslySetInnerHTML={{ __html: formatInline(item) }}/>)}
+        </ul>
+      );
+    }
+    listItems = []; listType = null;
+  };
+
+  lines.forEach((line, i) => {
+    const olMatch = line.match(/^\d+\.\s+(.+)/);
+    const ulMatch = line.match(/^[-*]\s+(.+)/);
+    const h3Match = line.match(/^###\s+(.+)/);
+    const h2Match = line.match(/^##\s+(.+)/);
+    const h1Match = line.match(/^#\s+(.+)/);
+
+    if (olMatch) { if (listType !== "ol") { flushList(); listType = "ol"; } listItems.push(olMatch[1]); return; }
+    if (ulMatch) { if (listType !== "ul") { flushList(); listType = "ul"; } listItems.push(ulMatch[1]); return; }
+    flushList();
+
+    if (h3Match || h2Match || h1Match) {
+      const text = (h3Match || h2Match || h1Match)![1];
+      elements.push(<p key={i} className="font-semibold mt-3 mb-1 text-sm" style={{ color: "#0A3D3D" }} dangerouslySetInnerHTML={{ __html: formatInline(text) }}/>);
+    } else if (line.trim() === "") {
+      elements.push(<div key={i} className="h-2"/>);
+    } else {
+      elements.push(<p key={i} className="text-sm leading-relaxed" style={{ color: "#0D1F1F" }} dangerouslySetInnerHTML={{ __html: formatInline(line) }}/>);
+    }
+  });
+  flushList();
+  return <div className="space-y-0.5">{elements}</div>;
+}
+
+function formatInline(text: string): string {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong style="color:#0A3D3D;font-weight:600">$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/`(.+?)`/g, '<code style="background:rgba(10,61,61,0.08);padding:1px 5px;border-radius:4px;font-size:12px;font-family:monospace">$1</code>');
+}
+
 export default function ChatbotPage() {
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: "Hi! I'm your AI career advisor powered by Dalence. I can help with resume tips, career guidance, interview prep, and skill recommendations. What would you like to work on today?" }
@@ -64,7 +120,7 @@ export default function ChatbotPage() {
               <Bot className="w-5 h-5 text-white"/>
             </div>
             <div>
-              <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: 18, color: "#0D1F1F" }}>Dalence Career Advisor</h1>
+              <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: 18, color: "#0D1F1F" }}>AI Career Advisor</h1>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#7BA89A" }}/>
                 <span className="text-xs" style={{ color: "#5A7575" }}>Online · Ready to help</span>
@@ -108,7 +164,12 @@ export default function ChatbotPage() {
               <div className="max-w-[75%]">
                 <div className="px-4 py-3 rounded-2xl text-sm leading-relaxed"
                   style={{ background: msg.role === "user" ? F : "white", color: msg.role === "user" ? "white" : "#0D1F1F", border: msg.role === "assistant" ? "1px solid rgba(10,61,61,0.08)" : "none", boxShadow: msg.role === "assistant" ? "0 2px 8px rgba(10,61,61,0.04)" : "none" }}>
-                  {msg.content || <span className="flex gap-1"><span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: "#5A7575", animationDelay: "0ms" }}/><span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: "#5A7575", animationDelay: "150ms" }}/><span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: "#5A7575", animationDelay: "300ms" }}/></span>}
+                  {!msg.content
+                    ? <span className="flex gap-1"><span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: "#5A7575", animationDelay: "0ms" }}/><span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: "#5A7575", animationDelay: "150ms" }}/><span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: "#5A7575", animationDelay: "300ms" }}/></span>
+                    : msg.role === "user"
+                    ? <span>{msg.content}</span>
+                    : <MarkdownMessage content={msg.content} />
+                  }
                 </div>
               </div>
             </div>

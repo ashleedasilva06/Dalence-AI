@@ -20,6 +20,7 @@ if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers,
+  trustHost: true,
   session: { strategy: "jwt" },
   callbacks: {
     async jwt({ token, account }) {
@@ -39,24 +40,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           });
           if (res.ok) {
             const data = await res.json();
-            console.log("[Auth] Backend response:", JSON.stringify(data));
             if (data.access_token) {
               token.backendToken = data.access_token;
               token.backendUser = data.user;
-              console.log("[Auth] Token stored in JWT:", !!token.backendToken);
             }
           }
         } catch (e) {
-          console.error("[Auth] Backend sync failed:", e);
         }
       }
       return token;
     },
     async session({ session, token }: { session: any; token: any }) {
-      console.log("[Auth] Session callback, token keys:", Object.keys(token));
       session.backendToken = token.backendToken;
       session.backendUser = token.backendUser;
-      console.log("[Auth] Session backendToken set:", !!session.backendToken);
       return session;
     },
   },

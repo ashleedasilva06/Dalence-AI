@@ -9,6 +9,7 @@ import {
   FileText, Briefcase, MessageSquare, TrendingUp,
   Upload, ArrowRight, Loader2, Zap, Target, ClipboardList
 } from "lucide-react";
+import { DashboardSkeleton } from "@/components/ui/Skeleton";
 import {
   RadarChart, PolarGrid, PolarAngleAxis, Radar,
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis,
@@ -78,9 +79,7 @@ export default function DashboardPage() {
 
         <div className="p-8 max-w-7xl mx-auto space-y-6">
           {loading ? (
-            <div className="flex justify-center py-20">
-              <Loader2 className="w-8 h-8 animate-spin" style={{ color: COPPER }} />
-            </div>
+            <DashboardSkeleton />
           ) : !latest ? (
             <Card>
               <div className="flex flex-col items-center justify-center py-16 text-center">
